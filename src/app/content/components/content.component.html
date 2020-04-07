@@ -1,0 +1,234 @@
+ <!-- Navigation -->
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Covid-19 Real time statistics</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container w-100" style="min-width:90%">
+  <!-- Heading Row -->
+  <div class="row align-items-center my-5">
+    <!-- /.col-lg-8 -->
+    <div class="col-lg-4">
+      <img class="img-fluid rounded mb-4 mb-lg-0" src="https://covid19.columbia.edu/sites/default/files/styles/cu_crop/public/content/covid-19/covid-19%20virus.jpeg?itok=OTa0CIKc" alt="">
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+          <br>
+          <label for="exampleInputEmail1">Subscribe to receive news every hour</label>
+          <input type="email" [(ngModel)]="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          <div>
+            <span style="color:red" *ngIf="message=='Your email address is not valid !'"><em>{{message}}</em></span>
+            <span style="color:green" *ngIf="message!='Well done!'"><em>{{message}}</em></span>
+          </div>
+        </div>
+        <button type="submit" (click)="addEmail()" class="btn btn-primary">Submit</button>
+      
+    <!-- /.col-md-4 -->
+  </div>
+  
+  <!-- /.row -->
+
+  <!-- Content Row -->
+  <div class="row">
+    
+    <br>
+    <hr>
+    
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">New Cases</th>
+            <th scope="col">New Deaths</th>
+            <th scope="col">Total Cases</th>
+            <th scope="col">Total Active Cases</th>
+            <th scope="col">Total Deaths</th>
+            <th scope="col">Total Recovered</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="New Cases" ><strong style="color:green"> {{newCases}}</strong></td>
+            <td data-label="New Deaths" ><strong style="color:red">  {{newDeaths}}</strong></td>
+            <td data-label="Total Cases" ><strong style="color:blue">  {{totalCases}}</strong></td>
+            <td data-label="Total Active Cases" ><strong style="color:rgb(128, 112, 128)">  {{totalActiveCases}}</strong></td>
+            <td data-label="Total Deaths" ><strong style="color:grey">  {{totalDeaths}}</strong></td>
+            <td data-label="Total Recovered" ><strong style="color:tomato"> {{totalRecovered}}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table>
+        <tr>
+          <td>
+            <p>Filter by country : <input class="form-control" [(ngModel)]="country" /></p>
+          </td>
+          <td>
+            <p>
+              Filter increasing : <select class="form-control" name="selection" [(ngModel)]="selection">
+                  <option value="confirmed">Filter by increasing confirmed cases :</option>
+                  <option value="deaths">Filter by increasing deaths :</option>
+                  <option value="recovered">Filter by increasing recovered :</option>
+              </select>
+            </p>
+          </td>
+          <td>
+            <p>
+              Filter decreasing : <select class="form-control" name="selection2" [(ngModel)]="selection2">
+                  <option value="confirmed">Filter by decreasing confirmed cases :</option>
+                  <option value="deaths">Filter by decreasing deaths :</option>
+                  <option value="recovered">Filter by decreasing recovered :</option>
+              </select>
+            </p>   
+          </td>
+        </tr>
+      </table>
+      
+      
+  </div>
+
+    <table>
+  
+
+      <thead>
+        <tr>
+          <th scope="col">Country</th>
+          <th scope="col">Confirmed</th>
+          <th scope="col">Active Cases</th>
+          <th scope="col">Deaths</th>
+          <th scope="col">Recovered</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of dataSet | filterCountry : country | filterInc : selection | filterDec : selection2">
+          <td data-label="Country">{{data.country_name}}</td>
+
+          <td  data-label="Confirmed">{{data.cases}}<span style="color:red"> (+{{data.new_cases}})</span><span style="color:violet"> ({{floor(data.cases.replace(",","")*100/totalCases*100)/100}}% of total cases)</span></td>
+          
+          <td  data-label="Active Cases">{{data.active_cases}}<span style="color:violet"> ({{floor(data.active_cases.replace(",","")*100/totalActiveCases*100)/100}}% of total active cases)</span></td>
+  
+          <td  data-label="Deaths">{{data.deaths}}<span style="color: red"> (+{{data.new_deaths}})</span><span style="color:violet"> ({{floor(data.deaths.replace(",","")*100/totalDeaths*100)/100}}% of total deaths)</span></td>
+  
+          <td  data-label="Recovered">{{data.total_recovered}} <span style="color:teal"> ({{floor(data.total_recovered.replace(",","")*100/data.cases.replace(",","")*100)/100}}% of confirmed cases)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-3 bg-dark fixed-bottom">
+  <div class="container">
+    <p class="m-0 text-center text-white"><em>Made with patience by <a style="text-decoration:none; color:#dddddd" href="https://www.linkedin.com/in/zakaria-maaraki/"><strong>Maaraki Zakaria</strong></a></em></p>
+  </div>
+  <!-- /.container -->
+</footer>
+
+  
+
+
+<style>
+    body {
+
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+</style>
+
+
+ 
+
+
