@@ -10,7 +10,7 @@ Ce qu'il est requis :
 
 ### Pour commencer
 
-clonez le projet : `` git clone https://github.com/BrolyCode/Covid-19-Real-Time-Statistics.git ``
+clonez le projet : `` git clone git@github.com:INGENIANCE/Covid-19-RT-Statistics-FrontEnd.git ``
 
 ## Démarrage du l'application
 
